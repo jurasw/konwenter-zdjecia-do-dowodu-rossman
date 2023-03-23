@@ -126,7 +126,7 @@ const App: React.FC = () => {
           overflow: "hidden",
         }}
       >
-        <div className="container" style={{ float: "left", width: "50%" }}>
+        <div className="container">
           <Title level={2}>
             Konwenter zdjęcie do dowodu/paszportu/legitymacji do wydrukowania w
             rossmanie
@@ -155,7 +155,7 @@ const App: React.FC = () => {
             </Dragger>
           </ImgCrop>
         </div>
-        <div className="container" style={{ float: "left", width: "50%" }}>
+        <div className="container">
           {file && (
             <div style={{ padding: 20 }}>
               <Title level={2}>
