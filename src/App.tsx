@@ -1,26 +1,82 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Button } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
+import Dragger from "antd/es/upload/Dragger";
+import { DownloadOutlined } from "@ant-design/icons";
+import ImgCrop from "antd-img-crop";
 
-function App() {
+const App: React.FC = () => {
+  const [file, setFile] = useState<File | null>(null);
+
+  const props = {
+    accept: ".png,.jpeg",
+    beforeUpload: (file: File) => {
+      setFile(file);
+      return false;
+    },
+  };
+
+  const handleDownload = () => {
+    if (!file) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = 1360;
+    canvas.height = 982;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      for (let i = 0; i < 10; i++) {
+        const x = (i % 5) * 264;
+        const y = Math.floor(i / 5) * 340;
+        ctx.drawImage(img, x, y, 264, 340);
+      }
+
+      const link = document.createElement("a");
+      link.download = "image.jpg";
+      link.href = canvas.toDataURL("image/jpeg");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ImgCrop rotationSlider aspect={35 / 45}>
+        <Dragger {...props}>
+          <p className="ant-upload-drag-icon">
+            <InboxOutlined />
+          </p>
+          <p className="ant-upload-text">
+            Click or drag file to this area to upload
+          </p>
+          <p className="ant-upload-hint">
+            Support for a single or bulk upload. Strictly prohibited from
+            uploading company data or other banned files.
+          </p>
+        </Dragger>
+      </ImgCrop>
+
+      {file && (
+        <div>
+          {/* <img src={URL.createObjectURL(file)} alt="uploaded image" /> */}
+          <Button
+            type="primary"
+            onClick={handleDownload}
+            icon={<DownloadOutlined />}
+            size={"large"}
+          >
+            Download
+          </Button>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default App;
