@@ -4,6 +4,7 @@ import { InboxOutlined } from "@ant-design/icons";
 import Dragger from "antd/es/upload/Dragger";
 import { DownloadOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
+import "./App.css";
 
 const App: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -125,7 +126,7 @@ const App: React.FC = () => {
           overflow: "hidden",
         }}
       >
-        <div style={{ float: "left", width: "50%" }}>
+        <div className="container">
           <Title level={2}>
             Konwenter zdjęcie do dowodu/paszportu/legitymacji do wydrukowania w
             rossmanie
@@ -154,11 +155,12 @@ const App: React.FC = () => {
             </Dragger>
           </ImgCrop>
         </div>
-        <div style={{ float: "left", width: "50%" }}>
+        <div className="container">
           {file && (
             <div style={{ padding: 20 }}>
               <Title level={2}>
-                Pammiętaj aby wydrukować zdjęcie w formacie {value[0]/100}cm x {value[1]/100}cm!
+                Pammiętaj aby wydrukować zdjęcie w formacie {value[0] / 100}cm x{" "}
+                {value[1] / 100}cm!
               </Title>
               <img
                 src={generated}
