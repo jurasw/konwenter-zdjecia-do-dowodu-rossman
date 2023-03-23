@@ -37,7 +37,7 @@
   }
 }
 
-@media only screen and (min-width: 620px) {
+/* @media only screen and (min-width: 620px) {
   .container {
     float: left;
     width: 50%;
@@ -52,4 +52,4 @@
   body {
     margin-top: 100px;
   }
-}
+} */
