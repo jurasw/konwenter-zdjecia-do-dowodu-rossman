@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { Button, Segmented, Typography } from "antd";
+import {
+  Button,
+  Radio,
+  RadioChangeEvent,
+  Segmented,
+  Select,
+  Typography,
+} from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Dragger from "antd/es/upload/Dragger";
 import { DownloadOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
+import { SelectCommonPlacement } from "antd/es/_util/motion";
 
 const App: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
-  // const [value, setValue] = useState<string | number>("9x13 cm");
+  const [value, setValue] = useState([900, 1300, 6]);
   const [generated, setGenerated] = useState("");
 
   const { Title } = Typography;
@@ -17,8 +25,9 @@ const App: React.FC = () => {
     beforeUpload: (file: File) => {
       setFile(file);
       const canvas = document.createElement("canvas");
-      canvas.width = 1360;
-      canvas.height = 982;
+      canvas.height = value[0];
+      canvas.width = value[1];
+      let amount = value[2];
 
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
@@ -27,10 +36,10 @@ const App: React.FC = () => {
       img.src = URL.createObjectURL(file);
 
       img.onload = () => {
-        for (let i = 0; i < 10; i++) {
-          const x = (i % 5) * 264;
-          const y = Math.floor(i / 5) * 340;
-          ctx.drawImage(img, x, y, 264, 340);
+        for (let i = 0; i < amount; i++) {
+          const x = (i % (amount / 2)) * 350;
+          const y = Math.floor(i / (amount / 2)) * 450;
+          ctx.drawImage(img, x, y, 350, 450);
         }
 
         const link = document.createElement("a");
@@ -46,8 +55,9 @@ const App: React.FC = () => {
   const handleDownload = () => {
     if (!file) return;
     const canvas = document.createElement("canvas");
-    canvas.width = 1360;
-    canvas.height = 982;
+    canvas.height = value[0];
+    canvas.width = value[1];
+    let amount = value[2];
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -56,10 +66,10 @@ const App: React.FC = () => {
     img.src = URL.createObjectURL(file);
 
     img.onload = () => {
-      for (let i = 0; i < 10; i++) {
-        const x = (i % 5) * 264;
-        const y = Math.floor(i / 5) * 340;
-        ctx.drawImage(img, x, y, 264, 340);
+      for (let i = 0; i < amount; i++) {
+        const x = (i % (amount / 2)) * 350;
+        const y = Math.floor(i / (amount / 2)) * 450;
+        ctx.drawImage(img, x, y, 350, 450);
       }
 
       const link = document.createElement("a");
@@ -68,6 +78,39 @@ const App: React.FC = () => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    };
+  };
+
+  const handleChange = (value: { value: string; label: React.ReactNode }) => {
+    console.log(value);
+  };
+
+  const valueChange = (e: RadioChangeEvent) => {
+    setValue(e.target.value);
+    if (!file) return;
+    const canvas = document.createElement("canvas");
+    canvas.height = e.target.value[0];
+    canvas.width = e.target.value[1];
+    let amount = e.target.value[2];
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      for (let i = 0; i < amount; i++) {
+        const x = (i % (amount / 2)) * 350;
+        const y = Math.floor(i / (amount / 2)) * 450;
+        ctx.drawImage(img, x, y, 350, 450);
+      }
+
+      const link = document.createElement("a");
+      link.download = "image.jpg";
+      link.href = canvas.toDataURL("image/jpeg");
+      document.body.appendChild(link);
+      setGenerated(link.href);
     };
   };
 
@@ -95,12 +138,19 @@ const App: React.FC = () => {
         }}
       >
         <div style={{ float: "left", width: "50%" }}>
-          {/* <Segmented block options={["9x13 cm", "10x15 cm", "13x18 cm"]} value={value} onChange={setValue}/> */}
           <Title level={2}>
             Konwenter zdjęcie do dowodu/paszportu/legitymacji do wydrukowania w
             rossmanie
           </Title>
-
+          <Radio.Group
+            value={value}
+            onChange={valueChange}
+            style={{ paddingBottom: 20 }}
+          >
+            <Radio.Button value={[900, 1300, 6]}>9x13cm</Radio.Button>
+            <Radio.Button value={[1000, 1500, 8]}>10x15cm</Radio.Button>
+            <Radio.Button value={[1300, 1800, 10]}>13x18cm</Radio.Button>
+          </Radio.Group>
           <ImgCrop rotationSlider aspect={35 / 45}>
             <Dragger {...props} style={{ maxHeight: "300px" }}>
               <p className="ant-upload-drag-icon">
@@ -120,7 +170,7 @@ const App: React.FC = () => {
           {file && (
             <div style={{ padding: 20 }}>
               <Title level={2}>
-                Pammiętaj aby wydrukować zdjęcie w formacie 18cm x 13cm!
+                Pammiętaj aby wydrukować zdjęcie w formacie {value}!
               </Title>
               <img
                 src={generated}
@@ -128,7 +178,7 @@ const App: React.FC = () => {
                 style={{ width: "50%" }}
               />
 
-              <div style={{padding: 20}}>
+              <div style={{ padding: 20 }}>
                 <Button
                   type="primary"
                   icon={<DownloadOutlined />}
