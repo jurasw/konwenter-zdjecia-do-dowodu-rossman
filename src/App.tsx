@@ -1,17 +1,9 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Radio,
-  RadioChangeEvent,
-  Segmented,
-  Select,
-  Typography,
-} from "antd";
+import { Button, Radio, RadioChangeEvent, Typography } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Dragger from "antd/es/upload/Dragger";
 import { DownloadOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
-import { SelectCommonPlacement } from "antd/es/_util/motion";
 
 const App: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -79,10 +71,6 @@ const App: React.FC = () => {
       link.click();
       document.body.removeChild(link);
     };
-  };
-
-  const handleChange = (value: { value: string; label: React.ReactNode }) => {
-    console.log(value);
   };
 
   const valueChange = (e: RadioChangeEvent) => {
