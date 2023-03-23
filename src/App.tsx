@@ -158,7 +158,7 @@ const App: React.FC = () => {
           {file && (
             <div style={{ padding: 20 }}>
               <Title level={2}>
-                Pammiętaj aby wydrukować zdjęcie w formacie {value}!
+                Pammiętaj aby wydrukować zdjęcie w formacie {value[0]/100}cm x {value[1]/100}cm!
               </Title>
               <img
                 src={generated}
