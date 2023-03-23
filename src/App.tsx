@@ -46,35 +46,57 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
-      <ImgCrop rotationSlider aspect={35 / 45}>
-        <Dragger {...props}>
-          <p className="ant-upload-drag-icon">
-            <InboxOutlined />
-          </p>
-          <p className="ant-upload-text">
-            Click or drag file to this area to upload
-          </p>
-          <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibited from
-            uploading company data or other banned files.
-          </p>
-        </Dragger>
-      </ImgCrop>
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        background: "#f5f5f5",
+        textAlign: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "90%",
+          height: "80%",
+          background: "#fff",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          padding: 50,
+          borderRadius: 20,
+        }}
+      >
+        <ImgCrop rotationSlider aspect={35 / 45}>
+          <Dragger {...props} style={{ maxHeight: "300px" }}>
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">
+              Click or drag file to this area to upload
+            </p>
+            <p className="ant-upload-hint">
+              Support for a single or bulk upload. Strictly prohibited from
+              uploading company data or other banned files.
+            </p>
+          </Dragger>
+        </ImgCrop>
 
-      {file && (
-        <div>
-          {/* <img src={URL.createObjectURL(file)} alt="uploaded image" /> */}
-          <Button
-            type="primary"
-            onClick={handleDownload}
-            icon={<DownloadOutlined />}
-            size={"large"}
-          >
-            Download
-          </Button>
-        </div>
-      )}
+        {file && (
+          <div>
+            {/* <img src={URL.createObjectURL(file)} alt="uploaded image" /> */}
+            <Button
+              type="primary"
+              onClick={handleDownload}
+              icon={<DownloadOutlined />}
+              size={"large"}
+            >
+              Download
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
