@@ -128,7 +128,7 @@ const App: React.FC = () => {
       >
         <div className="container" style={{ float: "left", width: "50%" }}>
           <Title level={2}>
-            Konwenter zdjęcie do dowodu/paszportu/legitymacji do wydrukowania w
+            Konwerter zdjęcie do dowodu/paszportu/legitymacji do wydrukowania w
             rossmanie
           </Title>
           <Radio.Group
